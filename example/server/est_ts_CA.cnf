@@ -53,8 +53,11 @@ serialNumber            = optional
 
 # This goes against PKIX guidelines but some CAs do it and some software
 # requires this to avoid interpreting an end user certificate as a CA.
-basicConstraints=CA:FALSE
-keyUsage=digitalSignature
+basicConstraints=critical,CA:FALSE
+keyUsage=critical,digitalSignature
+1.2.3.4=critical,ASN1:UTF8String:TruststoreAdminRole
+
+
 #crlDistributionPoints=URI:http://example.com/crl.pem
 # Add the id-kp-cmcRA usage.  This isn't defined in OpenSSL, so we
 # Need to use the OID value
@@ -63,15 +66,19 @@ keyUsage=digitalSignature
 # PKIX recommendations harmless if included in all certificates.
 subjectKeyIdentifier=hash
 #authorityKeyIdentifier=keyid,issuer
-authorityKeyIdentifier=keyid
+authorityKeyIdentifier=keyid:always
 
 [ req_distinguished_name ]
 x509_extensions        = v3_ca
 
 # estExample_setup.sh references this section for initial CA values
 [ v3_ca ]
-basicConstraints    = CA:TRUE
+
 subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid:always
+keyUsage = critical, keyCertSign
+basicConstraints    = critical,CA:TRUE
+
 
 [ req ]
 default_bits           = 2048
